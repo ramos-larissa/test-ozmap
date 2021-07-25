@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=dev node src/index.js",
-    "test": "mocha"
+    "test": "mocha",
+    "start": "nodemon src/index.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "chai-json-schema": "^1.5.1",
-    "mocha": "^8.1.3"
+    "mocha": "^8.1.3",
+    "nodemon": "^2.0.12"
   }
 }
