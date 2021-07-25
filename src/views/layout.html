@@ -4,10 +4,90 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="styles.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Crud OZMap</title>
+
+    <!--CSS-->
+    <style>
+        body{
+            background: whitesmoke;
+        }
+
+        h1, p{
+            text-align: center;
+            margin-top: 25px;
+        }
+        table{
+            border: 3px solid black;
+        }
+
+        input[type='submit'], button, [aria-label]{
+            cursor: pointer;
+        }
+
+        .btn-form{
+            margin: 10px;
+        }
+
+        .form{
+            margin: auto;
+            max-width:400px;
+            text-align: center
+        }
+
+        .input-form{
+            width: 80px;
+        }
+
+
+    </style>
+
+    <!--JAVASCRIPT-->
+    <script>
+
+    </script>
 </head>
+
+<!--HTML-->
 <body>
-    <%include home.html %>
+
+<div class="title">
+    <h1>Página de usuários</h1>
+    <p>Nesta página você pode ver, adicionar, editar e deletar os usuários.</p>
+</div>
+
+<div class="form">
+    <form>
+        <input type="text" id="add-todo" placeholder="Nome do usuário">
+        <input type="number" id="age" placeholder="Idade" class="input-form">
+        <input type="submit" value="Adicionar" class="btn btn-primary btn-form">
+    </form>
+
+    <p id="counter"></p>
+
+    <table class="table table-borderless">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Idade</th>
+            <th scope="col">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>34</td>
+            <td>
+                <button type="button" class="btn btn-outline-success">Editar</button>
+                <button type="button" class="btn btn-outline-danger">Deletar</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>
