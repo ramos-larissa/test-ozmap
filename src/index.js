@@ -27,7 +27,7 @@ render(koa, {
 
 //rota simples pra testar se o servidor está online
 router.get('/', async (ctx) => {
-  await ctx.render('index')
+  await ctx.render('home')
 });
 
 //Uma rota de exemplo simples aqui.
