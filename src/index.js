@@ -22,6 +22,14 @@ const koa = new Koa();
 const router = new Router();
 
 const PORT = process.env.PORT || 3000;
+
+
+koa
+  .use(router.routes())
+  .use(router.allowedMethods())
+  .use(json())
+  .use(bodyParser());
+
 render(koa, {
   root: path.join(__dirname, 'views'),
   layout: 'layout',
@@ -50,9 +58,9 @@ router.get('/users', async (ctx) => {
 });
 
 //Rota para criar novos usuários
-router.post('/create-user', koaBody(), async (ctx) => {
+router.post('/create-user', koaBody({ multipart: true }), async (ctx) => {
     try {
-      console.log("return:", ctx.request.body.data);
+      console.log("return:", ctx.request.body);
       const newUser = {
         name: ctx.request.body.name,
         age: ctx.request.body.age
@@ -72,7 +80,7 @@ router.post('/create-user', koaBody(), async (ctx) => {
 );
 
 //Rota para atualizar os usuários
-router.post('/update-user', koaBody(), async (ctx) => {
+router.put('/update-user', koaBody({ multipart: true }), async (ctx) => {
     try {
       const updateUser = {
         name: ctx.request.body.name,
@@ -101,7 +109,8 @@ router.post('/update-user', koaBody(), async (ctx) => {
 
 router.post('/delete-user', koaBody(), async (ctx) => {
     try {
-      const result = await models.Users.update(
+      console.log("return:", ctx.request.body);
+      const result = await models.Users.destroy(
         {
           where: {
             id: ctx.request.body.id
@@ -121,12 +130,6 @@ router.post('/delete-user', koaBody(), async (ctx) => {
     }
   }
 );
-
-koa
-  .use(router.routes())
-  .use(router.allowedMethods())
-  .use(json())
-  .use(bodyParser());
 
 const server = koa.listen(PORT);
 
