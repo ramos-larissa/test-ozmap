@@ -4,149 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
     <title>Crud OZMap</title>
 
     <!--CSS-->
-    <style>
-        body{
-            background: whitesmoke;
-        }
-
-        h1, p{
-            text-align: center;
-            margin-top: 25px;
-        }
-        table{
-            border: 3px solid black;
-        }
-
-        input[type='submit'], button, [aria-label]{
-            cursor: pointer;
-        }
-
-        .btn-form{
-            margin: 10px;
-        }
-
-        .form{
-            margin: auto;
-            max-width:400px;
-            text-align: center
-        }
-
-        .input-form{
-            width: 80px;
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: rgba(0,0,0,0.8);
-            z-index: 99999;
-            opacity:0;
-            -webkit-transition: opacity 400ms ease-in;
-            -moz-transition: opacity 400ms ease-in;
-            transition: opacity 400ms ease-in;
-            pointer-events: none;
-        }
-
-        .modal:target {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal > div {
-            width: 400px;
-            position: relative;
-            margin: 10% auto;
-            padding: 15px 20px;
-            background: #fff;
-        }
-
-        .fechar {
-            position: absolute;
-            width: 30px;
-            right: -15px;
-            top: -20px;
-            text-align: center;
-            line-height: 30px;
-            margin-top: 5px;
-            background: #ff4545;
-            border-radius: 50%;
-            font-size: 16px;
-            color: #8d0000;
-        }
-
-
-    </style>
-
-    <!--JAVASCRIPT-->
-    <script>
-      let myModal = document.getElementById('myModal')
-      let myInput = document.getElementById('myInput')
-
-      myModal.addEventListener('shown.bs.modal', function () {
-        myInput.focus()
-      })
-    </script>
+        <% include styles.html %>
 </head>
 
 <!--HTML-->
 <body>
-
-<div class="title">
-    <h1>Página de usuários</h1>
-    <p>Nesta página você pode ver, adicionar, editar e deletar os usuários.</p>
-</div>
-
-<div class="form">
-    <form>
-        <input type="text" id="add-todo" placeholder="Nome do usuário">
-        <input type="number" id="age" placeholder="Idade" class="input-form">
-        <input type="submit" value="Adicionar" class="btn btn-primary btn-form">
-    </form>
-
-    <table class="table table-borderless">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Idade</th>
-            <th scope="col">Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>34</td>
-            <td>
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit">Editar</button>
-                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">Deletar</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<a href="#abrirModal">Open Modal</a>
-
-<div id="abrirModal" class="modal">
-    <a href="#fechar" title="Fechar" class="fechar">x</a>
-    <h2>Janela Modal</h2>
-    <p>Esta é uma simples janela de modal.</p>
-    <p>Você pode fazer qualquer coisa aqui, página de Login, pop-ups, ou formulários</p>
-</div>
-
-
-
-
+<% include modal-delete.html %>
+<% include add.html %>
+<% include table.html %>
 
 </body>
 </html>
+
