@@ -40,12 +40,60 @@
             width: 80px;
         }
 
+        .modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: rgba(0,0,0,0.8);
+            z-index: 99999;
+            opacity:0;
+            -webkit-transition: opacity 400ms ease-in;
+            -moz-transition: opacity 400ms ease-in;
+            transition: opacity 400ms ease-in;
+            pointer-events: none;
+        }
+
+        .modal:target {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal > div {
+            width: 400px;
+            position: relative;
+            margin: 10% auto;
+            padding: 15px 20px;
+            background: #fff;
+        }
+
+        .fechar {
+            position: absolute;
+            width: 30px;
+            right: -15px;
+            top: -20px;
+            text-align: center;
+            line-height: 30px;
+            margin-top: 5px;
+            background: #ff4545;
+            border-radius: 50%;
+            font-size: 16px;
+            color: #8d0000;
+        }
+
 
     </style>
 
     <!--JAVASCRIPT-->
     <script>
+      let myModal = document.getElementById('myModal')
+      let myInput = document.getElementById('myInput')
 
+      myModal.addEventListener('shown.bs.modal', function () {
+        myInput.focus()
+      })
     </script>
 </head>
 
@@ -64,8 +112,6 @@
         <input type="submit" value="Adicionar" class="btn btn-primary btn-form">
     </form>
 
-    <p id="counter"></p>
-
     <table class="table table-borderless">
         <thead>
         <tr>
@@ -81,13 +127,26 @@
             <td>Mark</td>
             <td>34</td>
             <td>
-                <button type="button" class="btn btn-outline-success">Editar</button>
-                <button type="button" class="btn btn-outline-danger">Deletar</button>
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#edit">Editar</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delete">Deletar</button>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<a href="#abrirModal">Open Modal</a>
+
+<div id="abrirModal" class="modal">
+    <a href="#fechar" title="Fechar" class="fechar">x</a>
+    <h2>Janela Modal</h2>
+    <p>Esta é uma simples janela de modal.</p>
+    <p>Você pode fazer qualquer coisa aqui, página de Login, pop-ups, ou formulários</p>
+</div>
+
+
+
+
 
 </body>
 </html>

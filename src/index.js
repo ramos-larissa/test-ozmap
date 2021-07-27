@@ -4,18 +4,24 @@
 //mais infos
 //https://github.com/ZijianHe/koa-router
 
+
 // todas as configuraçoes devem ser passadas via environment variables
-const PORT = process.env.PORT || 3000;
+
 
 const Koa = require('koa');
 const Router = require('koa-router');
+const bodyParser = require('koa-bodyparser')
 const json = require('koa-json');
 const path = require('path');
 const render = require('koa-ejs')
+const models = require('./models');
+const koaBody = require('koa-body');
+
 
 const koa = new Koa();
 const router = new Router();
 
+const PORT = process.env.PORT || 3000;
 render(koa, {
   root: path.join(__dirname, 'views'),
   layout: 'layout',
@@ -24,22 +30,103 @@ render(koa, {
   debug: false
 })
 
-//rota simples pra testar se o servidor está online
+//rota para renderizar view
 router.get('/', async (ctx) => {
   await ctx.render('layout')
 });
 
-//Uma rota de exemplo simples aqui.
-//As rotas devem ficar em arquivos separados, /src/controllers/userController.js por exemplo
+
+//Rota para listar os usuários
 router.get('/users', async (ctx) => {
-  ctx.status = 200;
-  ctx.body = {total: 0, count: 0, rows: []}
+  try{
+    const result = await models.Users.findAll();
+    ctx.body = result;
+    ctx.response.status = 200;
+  }catch (error){
+    console.error(error);
+    ctx.body.message = "Não foi possível acessar a lista de usuários!";
+    ctx.response.status = 500;
+  }
 });
+
+//Rota para criar novos usuários
+router.post('/create-user', koaBody(), async (ctx) => {
+    try {
+      console.log("return:", ctx.request.body.data);
+      const newUser = {
+        name: ctx.request.body.name,
+        age: ctx.request.body.age
+      };
+      const result = await models.Users.create(newUser);
+      ctx.body = result;
+      ctx.response.status = 200;
+
+
+
+    } catch (error) {
+      console.error(error);
+      ctx.body.message = "Não foi possível criar o usuário!";
+      ctx.response.status = 500;
+    }
+  }
+);
+
+//Rota para atualizar os usuários
+router.post('/update-user', koaBody(), async (ctx) => {
+    try {
+      const updateUser = {
+        name: ctx.request.body.name,
+        age: ctx.request.body.age
+      };
+      const result = await models.Users.update(updateUser,
+        {
+          where: {
+            id: ctx.request.body.id
+          }
+        }
+        );
+
+      ctx.body = result;
+      ctx.response.status = 200;
+
+      console.log(ctx.request.body);
+
+    } catch (error) {
+      console.error(error);
+      ctx.body.message = "Não foi possível atualizar o usuário!";
+      ctx.response.status = 500;
+    }
+  }
+);
+
+router.post('/delete-user', koaBody(), async (ctx) => {
+    try {
+      const result = await models.Users.update(
+        {
+          where: {
+            id: ctx.request.body.id
+          }
+        }
+      );
+
+      ctx.body = result;
+      ctx.response.status = 200;
+
+      console.log(ctx.request.body);
+
+    } catch (error) {
+      console.error(error);
+      ctx.body.message = "Não foi possível deletar o usuário!";
+      ctx.response.status = 500;
+    }
+  }
+);
 
 koa
   .use(router.routes())
   .use(router.allowedMethods())
-  .use(json());
+  .use(json())
+  .use(bodyParser());
 
 const server = koa.listen(PORT);
 
