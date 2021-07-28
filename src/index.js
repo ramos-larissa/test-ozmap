@@ -4,30 +4,144 @@
 //mais infos
 //https://github.com/ZijianHe/koa-router
 
+
 // todas as configuraçoes devem ser passadas via environment variables
-const PORT = process.env.PORT || 3000;
+
 
 const Koa = require('koa');
 const Router = require('koa-router');
+const bodyParser = require('koa-bodyparser')
+const json = require('koa-json');
+const path = require('path');
+const render = require('koa-ejs')
+const models = require('./models');
+const koaBody = require('koa-body');
+
 
 const koa = new Koa();
-var router = new Router();
+const router = new Router();
 
-//rota simples pra testar se o servidor está online
-router.get('/', async (ctx) => {
-  ctx.body = `Seu servidor esta rodando em http://localhost:${PORT}`; //http://localhost:3000/
-});
+const PORT = process.env.PORT || 3000;
 
-//Uma rota de exemplo simples aqui.
-//As rotas devem ficar em arquivos separados, /src/controllers/userController.js por exemplo
-router.get('/users', async (ctx) => {
-    ctx.status = 200;
-    ctx.body = {total:0, count: 0, rows:[]}
-});
 
 koa
   .use(router.routes())
-  .use(router.allowedMethods());
+  .use(router.allowedMethods())
+  .use(json())
+  .use(bodyParser());
+
+render(koa, {
+  root: path.join(__dirname, 'views'),
+  layout: 'layout',
+  viewExt: 'ejs',
+  cache: false,
+  debug: false
+})
+
+
+//rota para renderizar view
+router.get('/', async (ctx) => {
+  const result = await models.Users.findAll();
+  await ctx.render('main', {
+    users: result
+  })
+});
+
+
+//Rota para listar os usuários
+router.get('/users', async (ctx) => {
+  try {
+    const result = await models.Users.findAll();
+    ctx.body = result;
+    ctx.response.status = 200;
+  } catch (error) {
+    console.error(error);
+    ctx.body.message = "Não foi possível acessar a lista de usuários!";
+    ctx.response.status = 500;
+  }
+});
+
+//Rota para criar novos usuários
+router.post('/create-user', koaBody({multipart: true}), async (ctx) => {
+    try {
+      const newUser = {
+        name: ctx.request.body.name,
+        email: ctx.request.body.email,
+        age: ctx.request.body.age
+      };
+      const result = await models.Users.create(newUser);
+      ctx.body = result;
+      ctx.response.status = 200;
+      ctx.redirect('/')
+    } catch (error) {
+      console.error(error);
+      ctx.body.message = "Não foi possível criar o usuário!";
+      ctx.response.status = 500;
+    }
+  }
+);
+
+//Rota para atualizar os usuários
+router.get('/update-user', async (ctx) => {
+  const result = await models.Users.findOne(
+    {
+      where: {
+        id: ctx.request.query.id
+      }
+    }
+  );
+  await ctx.render('edit', {
+    users: result
+  })
+});
+
+router.put('/update-user', koaBody({multipart: true}), async (ctx) => {
+
+    try {
+      const updateUser = {
+        name: ctx.request.body.name,
+        email: ctx.request.body.email,
+        age: ctx.request.body.age,
+      };
+      const result = await models.Users.update(updateUser,
+        {
+          where: {
+            id: ctx.request.body.id
+          }
+        }
+        );
+
+      ctx.body = result;
+      ctx.response.status = 200;
+
+    } catch (error) {
+      console.error(error);
+      ctx.body.message = "Não foi possível atualizar o usuário!";
+      ctx.response.status = 500;
+    }
+  }
+);
+
+router.get('/delete-user', koaBody(), async (ctx) => {
+    try {
+      const result = await models.Users.destroy(
+        {
+          where: {
+            id: ctx.request.query.id
+          }
+        }
+      );
+      ctx.body = result;
+      ctx.response.status = 200;
+      ctx.redirect('/')
+
+    } catch (error) {
+      console.error(error);
+      ctx.body.message = "Não foi possível deletar o usuário!";
+      ctx.response.status = 500;
+    }
+  }
+);
 
 const server = koa.listen(PORT);
 
