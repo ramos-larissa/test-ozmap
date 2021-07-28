@@ -63,6 +63,7 @@ router.post('/create-user', koaBody({ multipart: true }), async (ctx) => {
       console.log("return:", ctx.request.body);
       const newUser = {
         name: ctx.request.body.name,
+        email: ctx.request.body.email,
         age: ctx.request.body.age
       };
       const result = await models.Users.create(newUser);
@@ -84,6 +85,7 @@ router.put('/update-user', koaBody({ multipart: true }), async (ctx) => {
     try {
       const updateUser = {
         name: ctx.request.body.name,
+        email: ctx.request.body.email,
         age: ctx.request.body.age
       };
       const result = await models.Users.update(updateUser,
