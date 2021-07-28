@@ -5,24 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        /*CSS*/
+        <% include styles.ejs %>
+    </style>
+
 </head>
 <body>
 <div class="form">
     <div class="testbox">
-        <form action="/">
+        <form action="/update-user" method="post">
             <div class="banner">
-                <h1>Adicione um novo usuário</h1>
+                <h1>Edite o usuário usuário</h1>
             </div>
             <div class="item">
                 <input type="text" name="name" placeholder="Nome completo"/>
                 <input type="number" name="age" placeholder="Idade"/>
-                <input type="number" name="email" placeholder="Email"/>
+                <input type="text" name="email" placeholder="Email"/>
             </div>
             <div class="btn-block">
-                <button type="submit" href="/">Adicionar</button>
+                <button class="btn-edit" type="submit">OK</button>
+                <a>
+                    <button>VOLTAR</button>
+                </a>
             </div>
         </form>
     </div>
 </div>
 </body>
 </html>
+
+
+
+

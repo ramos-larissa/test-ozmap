@@ -33,14 +33,25 @@ koa
 render(koa, {
   root: path.join(__dirname, 'views'),
   layout: 'layout',
-  viewExt: 'html',
+  viewExt: 'ejs',
+  cache: false,
+  debug: false
+})
+
+render(koa, {
+  root: path.join(__dirname, 'views'),
+  layout: 'edit',
+  viewExt: 'ejs',
   cache: false,
   debug: false
 })
 
 //rota para renderizar view
 router.get('/', async (ctx) => {
-  await ctx.render('layout')
+  const result = await models.Users.findAll();
+  await ctx.render('layout', {
+    users: result
+  })
 });
 
 
@@ -69,9 +80,7 @@ router.post('/create-user', koaBody({ multipart: true }), async (ctx) => {
       const result = await models.Users.create(newUser);
       ctx.body = result;
       ctx.response.status = 200;
-
-
-
+      ctx.redirect('/')
     } catch (error) {
       console.error(error);
       ctx.body.message = "Não foi possível criar o usuário!";
@@ -81,6 +90,19 @@ router.post('/create-user', koaBody({ multipart: true }), async (ctx) => {
 );
 
 //Rota para atualizar os usuários
+router.get('/update-user', async (ctx) => {
+  const result = await models.Users.findOne(
+    {
+      where: {
+        id: ctx.request.query.id
+      }
+    }
+  );
+  await ctx.render('edit', {
+    user: result
+  })
+});
+
 router.put('/update-user', koaBody({ multipart: true }), async (ctx) => {
     try {
       const updateUser = {
@@ -109,21 +131,18 @@ router.put('/update-user', koaBody({ multipart: true }), async (ctx) => {
   }
 );
 
-router.post('/delete-user', koaBody(), async (ctx) => {
+router.get('/delete-user', koaBody(), async (ctx) => {
     try {
-      console.log("return:", ctx.request.body);
       const result = await models.Users.destroy(
         {
           where: {
-            id: ctx.request.body.id
+            id: ctx.request.query.id
           }
         }
       );
-
       ctx.body = result;
       ctx.response.status = 200;
-
-      console.log(ctx.request.body);
+      ctx.redirect('/')
 
     } catch (error) {
       console.error(error);

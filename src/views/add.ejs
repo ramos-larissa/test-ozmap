@@ -7,25 +7,22 @@
     <title>Document</title>
 </head>
 <body>
-<div id="edit" class="w3-modal">
-    <div class="modal">
-        <form action="/">
-            <h2>Editar o usuário:</h2>
+<div class="form">
+    <div class="testbox">
+        <form action="/create-user" method="post">
+            <div class="banner">
+                <h1>Adicione um novo usuário</h1>
+            </div>
             <div class="item">
                 <input type="text" name="name" placeholder="Nome completo"/>
                 <input type="number" name="age" placeholder="Idade"/>
-                <input type="number" name="email" placeholder="E-mail"/>
+                <input type="text" name="email" placeholder="Email"/>
             </div>
-            <div class="options">
-                <button class="btn">Yes</button>
-                <button class="btn" onclick="document.getElementById('edit').style.display='none'">No</button>
+            <div class="btn-block">
+                <button type="submit">Adicionar</button>
             </div>
         </form>
     </div>
 </div>
 </body>
 </html>
-
-
-
-
