@@ -19,14 +19,18 @@
                 <h1>Edite o usuário usuário</h1>
             </div>
             <div class="item">
-                <input type="text" name="name" placeholder="Nome completo"/>
-                <input type="number" name="age" placeholder="Idade"/>
-                <input type="text" name="email" placeholder="Email"/>
+                <input type="hidden" name="id" value="<%=users.id%>"/>
+                <input type="text" name="name" value="<%=users.name%>"/>
+                <input type="number" name="age" value="<%=users.age%>"/>
+                <input type="text" name="email" value="<%=users.email%>"/>
             </div>
             <div class="btn-block">
                 <button class="btn-edit" type="submit">OK</button>
                 <a>
-                    <button>VOLTAR</button>
+                    <a href="/">
+                        <button>VOLTAR</button>
+                    </a>
+
                 </a>
             </div>
         </form>

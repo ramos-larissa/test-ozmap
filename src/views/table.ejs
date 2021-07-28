@@ -30,7 +30,9 @@
             <td><%= users[i].age%></td>
             <td><%= users[i].email%></td>
             <td>
-                <button class="btn-edit" onclick="document.getElementById('edit').style.display='block'">Editar</button>
+                <a href="/update-user?id=<%=users[i].id%>" >
+                <button class="btn-edit">Editar</button>
+                </a>
                 <a href="/delete-user?id=<%=users[i].id%>">
                     <button class="btn-delete">
                         Deletar

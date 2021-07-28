@@ -38,18 +38,11 @@ render(koa, {
   debug: false
 })
 
-render(koa, {
-  root: path.join(__dirname, 'views'),
-  layout: 'edit',
-  viewExt: 'ejs',
-  cache: false,
-  debug: false
-})
 
 //rota para renderizar view
 router.get('/', async (ctx) => {
   const result = await models.Users.findAll();
-  await ctx.render('layout', {
+  await ctx.render('main', {
     users: result
   })
 });
@@ -57,11 +50,11 @@ router.get('/', async (ctx) => {
 
 //Rota para listar os usuários
 router.get('/users', async (ctx) => {
-  try{
+  try {
     const result = await models.Users.findAll();
     ctx.body = result;
     ctx.response.status = 200;
-  }catch (error){
+  } catch (error) {
     console.error(error);
     ctx.body.message = "Não foi possível acessar a lista de usuários!";
     ctx.response.status = 500;
@@ -69,9 +62,8 @@ router.get('/users', async (ctx) => {
 });
 
 //Rota para criar novos usuários
-router.post('/create-user', koaBody({ multipart: true }), async (ctx) => {
+router.post('/create-user', koaBody({multipart: true}), async (ctx) => {
     try {
-      console.log("return:", ctx.request.body);
       const newUser = {
         name: ctx.request.body.name,
         email: ctx.request.body.email,
@@ -99,16 +91,17 @@ router.get('/update-user', async (ctx) => {
     }
   );
   await ctx.render('edit', {
-    user: result
+    users: result
   })
 });
 
-router.put('/update-user', koaBody({ multipart: true }), async (ctx) => {
+router.put('/update-user', koaBody({multipart: true}), async (ctx) => {
+
     try {
       const updateUser = {
         name: ctx.request.body.name,
         email: ctx.request.body.email,
-        age: ctx.request.body.age
+        age: ctx.request.body.age,
       };
       const result = await models.Users.update(updateUser,
         {
@@ -120,8 +113,6 @@ router.put('/update-user', koaBody({ multipart: true }), async (ctx) => {
 
       ctx.body = result;
       ctx.response.status = 200;
-
-      console.log(ctx.request.body);
 
     } catch (error) {
       console.error(error);
